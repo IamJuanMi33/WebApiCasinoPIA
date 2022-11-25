@@ -11,6 +11,9 @@ namespace WebApiCasinoPIA.Entidades
         [StringLength(maximumLength: 25, ErrorMessage = "El campo {0} solo puede contener hasta 25 caracteres")]
         public string Nombre { get; set; }
 
+        public List<ParticipanteRifa> ParticipanteRifa { get; set; }
+        public List<Premio> Premio { get; set; }
+
         //[NotMapped]
         //public int Menor { get; set; }
 
