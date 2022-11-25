@@ -33,7 +33,7 @@ namespace WebApiCasinoPIA.Controladores
             var exist = await context.Rifas.AnyAsync(x => x.Nombre == rifa.Nombre);
             if (exist)
             {
-                return BadRequest("ya existe una rifa con el mismo nombre, favor de introducir otro nombre válido")
+                return BadRequest("ya existe una rifa con el mismo nombre, favor de introducir otro nombre válido");
             }
 
             context.Add(rifa);

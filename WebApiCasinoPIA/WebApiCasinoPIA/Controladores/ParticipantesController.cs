@@ -9,15 +9,19 @@ namespace WebApiCasinoPIA.Controladores
     public class ParticipantesController : ControllerBase
     {
         private readonly ApplicationDbContext context;
+        private readonly ILogger<ParticipantesController> logger;
 
-        public ParticipantesController(ApplicationDbContext context)
+        public ParticipantesController(ApplicationDbContext context, ILogger<ParticipantesController> logger)
         {
             this.context = context;
+            this.logger = logger;
         }
 
         [HttpGet("leer")]
         public async Task<ActionResult<List<Participante>>> Get()
         {
+            // Logger
+            logger.LogWarning("Se obtiene el listado de participantes");
             return await context.Participantes.ToListAsync();
         }
 
@@ -29,7 +33,7 @@ namespace WebApiCasinoPIA.Controladores
             // Validación desde el controlador
             if (exist)
             {
-                return BadRequest("Ya existe un participante con el mismo nombre, favor de introducir otro nombre válido")
+                return BadRequest("Ya existe un participante con el mismo nombre, favor de introducir otro nombre válido");
             }
 
             context.Add(participante);
