@@ -11,33 +11,33 @@ namespace WebApiCasinoPIA.Entidades
         [StringLength(maximumLength: 25, ErrorMessage = "El campo {0} solo puede contener hasta 25 caracteres")]
         public string Nombre { get; set; }
 
-        [NotMapped]
-        public int Menor { get; set; }
+        //[NotMapped]
+        //public int Menor { get; set; }
 
-        [NotMapped]
-        public int Mayor { get; set; }
+        //[NotMapped]
+        //public int Mayor { get; set; }
 
-        public List<ParticipanteRifa> ParticipanteRifa { get; set; }
+        //public List<ParticipanteRifa> ParticipanteRifa { get; set; }
 
-        // Validación por Modelo
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            if (!string.IsNullOrEmpty(Nombre))
-            {
-                var primeraLetra = Nombre[0].ToString();
+        //// Validación por Modelo
+        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        //{
+        //    if (!string.IsNullOrEmpty(Nombre))
+        //    {
+        //        var primeraLetra = Nombre[0].ToString();
 
-                if (primeraLetra != primeraLetra.ToUpper())
-                {
-                    yield return new ValidationResult("La primera letra debe ser mayuscula",
-                        new String[] { nameof(Nombre) });
-                }
-            }
+        //        if (primeraLetra != primeraLetra.ToUpper())
+        //        {
+        //            yield return new ValidationResult("La primera letra debe ser mayuscula",
+        //                new String[] { nameof(Nombre) });
+        //        }
+        //    }
 
-            if (Menor > Mayor)
-            {
-                yield return new ValidationResult("El valor de menor no puede ser mayor que el campo mayor",
-                    new String[] { nameof(Menor) });
-            }
-        }
+        //    if (Menor > Mayor)
+        //    {
+        //        yield return new ValidationResult("El valor de menor no puede ser mayor que el campo mayor",
+        //            new String[] { nameof(Menor) });
+        //    }
+        //}
     }
 }
