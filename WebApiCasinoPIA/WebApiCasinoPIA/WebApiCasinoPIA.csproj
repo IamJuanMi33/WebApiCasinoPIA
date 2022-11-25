@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Servicios\**" />
-    <Content Remove="Servicios\**" />
-    <EmbeddedResource Remove="Servicios\**" />
-    <None Remove="Servicios\**" />
+    <Compile Remove="Servicios\IService.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +19,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

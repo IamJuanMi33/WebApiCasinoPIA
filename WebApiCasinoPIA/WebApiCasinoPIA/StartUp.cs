@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
+using WebApiCasinoPIA.Filtros;
+using WebApiCasinoPIA.Servicios;
 
 namespace WebApiCasinoPIA
 {
@@ -16,11 +18,22 @@ namespace WebApiCasinoPIA
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddJsonOptions(x =>
+            services.AddControllers(opciones =>
+            {
+                // Filtro Global
+                opciones.Filters.Add(typeof(FiltroDeExcepcion));
+            }).AddJsonOptions(x =>
             x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
+
+            // Filtro personalizado
+            services.AddTransient<FiltroDeAccion>();
+
+            // IHostedService
+            services.AddHostedService<EscribirEnArchivo>();
+            services.AddResponseCaching();
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>
@@ -41,6 +54,8 @@ namespace WebApiCasinoPIA
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseResponseCaching();
 
             app.UseAuthorization();
 

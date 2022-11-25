@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "7oc1WLaEOnkVaY6cV97ksR29XE60oFyS7g5JowNWEH4=",
+  "Hash": "/vmMt+rVNZaeXl/kUExHNbph0oKbfjER+k25wVA5XTI=",
   "Source": "WebApiCasinoPIA",
   "BasePath": "_content/WebApiCasinoPIA",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "WebApiCasinoPIA\\wwwroot",
+      "Source": "WebApiCasinoPIA",
+      "ContentRoot": "D:\\Archivos DD\\Papo\\Documentos\\FCFM\\7mo\\BackEnd\\PIA\\WebApiCasinoPIA\\WebApiCasinoPIA\\wwwroot\\",
+      "BasePath": "_content/WebApiCasinoPIA",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }
