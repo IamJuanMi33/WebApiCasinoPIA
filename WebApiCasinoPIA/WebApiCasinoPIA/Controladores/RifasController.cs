@@ -15,29 +15,34 @@ namespace WebApiCasinoPIA.Controladores
             this.context = context;
         }   
 
-        [HttpGet]
+        [HttpGet("leer")]
         public async Task<ActionResult<List<Rifa>>> GetAll()
         {
             return await context.Rifas.ToListAsync();
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("leer/{id:int}")]
         public async Task<ActionResult<Rifa>> GetById(int id)
         {
             return await context.Rifas.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult> Post(Rifa rifa)
-        //{
-        //    var exist = await context.ParticipantesRifas.AnyAsync(x => x.Id == rifa.ParticipanteId);
+        [HttpPost("crear")]
+        public async Task<ActionResult> Post(Rifa rifa)
+        {
+            var exist = await context.Rifas.AnyAsync(x => x.Nombre == rifa.Nombre);
+            if (exist)
+            {
+                return BadRequest("ya existe una rifa con el mismo nombre, favor de introducir otro nombre válido")
+            }
 
+            context.Add(rifa);
+            await context.SaveChangesAsync();
 
+            return Ok("la rifa fue creada correctamente");
+        }
 
-        //    return Ok("La rifa fue creada correctamente");
-        //}
-
-        [HttpPut("{id:int}")]
+        [HttpPut("actualizar/{id:int}")]
         public async Task<ActionResult> Put(Rifa rifa, int id)
         {
             var exist = await context.Rifas.AnyAsync(x => x.Id == id);
@@ -58,7 +63,7 @@ namespace WebApiCasinoPIA.Controladores
             return Ok("La rifa fue modificada correctamente");
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("borrar/{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
             var exist = await context.Rifas.AnyAsync(x => x.Id == id);

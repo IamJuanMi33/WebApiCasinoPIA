@@ -15,22 +15,30 @@ namespace WebApiCasinoPIA.Controladores
             this.context = context;
         }
 
-        [HttpGet]
+        [HttpGet("leer")]
         public async Task<ActionResult<List<Participante>>> Get()
         {
             return await context.Participantes.ToListAsync();
         }
 
-        [HttpPost]
+        [HttpPost("crear")]
         public async Task<ActionResult> Post(Participante participante)
         {
+            var exist = await context.Participantes.AnyAsync(x => x.Nombre == participante.Nombre);
+            
+            // Validación desde el controlador
+            if (exist)
+            {
+                return BadRequest("Ya existe un participante con el mismo nombre, favor de introducir otro nombre válido")
+            }
+
             context.Add(participante);
             await context.SaveChangesAsync();
             
-            return Ok("El participante fue creado correctamente");
+            return Ok("El participante con fue creado correctamente");
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("actualizar/{id:int}")]
         public async Task<ActionResult> Put(Participante participante, int id)
         {
             if (participante.Id != id)
@@ -44,7 +52,7 @@ namespace WebApiCasinoPIA.Controladores
             return Ok("El participante fue modificado correctamente");
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("borrar/{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
             var exist = await context.Participantes.AnyAsync(x => x.Id == id);
