@@ -11,8 +11,8 @@ using WebApiCasinoPIA;
 namespace WebApiCasinoPIA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221124224835_Rifa_RMM")]
-    partial class RifaRMM
+    [Migration("20221126055115_DTOs")]
+    partial class DTOs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,8 +32,14 @@ namespace WebApiCasinoPIA.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Apellido")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("Nombre")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -55,7 +61,7 @@ namespace WebApiCasinoPIA.Migrations
                     b.ToTable("ParticipantesRifas");
                 });
 
-            modelBuilder.Entity("WebApiCasinoPIA.Entidades.Rifa", b =>
+            modelBuilder.Entity("WebApiCasinoPIA.Entidades.Premio", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -65,6 +71,34 @@ namespace WebApiCasinoPIA.Migrations
 
                     b.Property<string>("Nombre")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ParticipanteId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RifaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParticipanteId");
+
+                    b.HasIndex("RifaId");
+
+                    b.ToTable("Premios");
+                });
+
+            modelBuilder.Entity("WebApiCasinoPIA.Entidades.Rifa", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
                     b.HasKey("Id");
 
@@ -90,14 +124,37 @@ namespace WebApiCasinoPIA.Migrations
                     b.Navigation("Rifa");
                 });
 
+            modelBuilder.Entity("WebApiCasinoPIA.Entidades.Premio", b =>
+                {
+                    b.HasOne("WebApiCasinoPIA.Entidades.Participante", "Participante")
+                        .WithMany("Premio")
+                        .HasForeignKey("ParticipanteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApiCasinoPIA.Entidades.Rifa", "Rifa")
+                        .WithMany("Premio")
+                        .HasForeignKey("RifaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Participante");
+
+                    b.Navigation("Rifa");
+                });
+
             modelBuilder.Entity("WebApiCasinoPIA.Entidades.Participante", b =>
                 {
                     b.Navigation("ParticipanteRifa");
+
+                    b.Navigation("Premio");
                 });
 
             modelBuilder.Entity("WebApiCasinoPIA.Entidades.Rifa", b =>
                 {
                     b.Navigation("ParticipanteRifa");
+
+                    b.Navigation("Premio");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "/vmMt+rVNZaeXl/kUExHNbph0oKbfjER+k25wVA5XTI=",
+  "Hash": "zhYuzE680/tjY0UaIlz8lIlPaYBw739HK967ULYdKro=",
   "Source": "WebApiCasinoPIA",
   "BasePath": "_content/WebApiCasinoPIA",
   "Mode": "Default",
@@ -10,10 +10,28 @@
     {
       "Name": "WebApiCasinoPIA\\wwwroot",
       "Source": "WebApiCasinoPIA",
-      "ContentRoot": "D:\\Archivos DD\\Papo\\Documentos\\FCFM\\7mo\\BackEnd\\PIA\\WebApiCasinoPIA\\WebApiCasinoPIA\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Leo21\\Documents\\Backend\\WebApiCasinoPIA\\WebApiCasinoPIA\\WebApiCasinoPIA\\wwwroot\\",
       "BasePath": "_content/WebApiCasinoPIA",
       "Pattern": "**"
     }
   ],
-  "Assets": []
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Leo21\\Documents\\Backend\\WebApiCasinoPIA\\WebApiCasinoPIA\\WebApiCasinoPIA\\wwwroot\\Archivo 1.txt",
+      "SourceId": "WebApiCasinoPIA",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Leo21\\Documents\\Backend\\WebApiCasinoPIA\\WebApiCasinoPIA\\WebApiCasinoPIA\\wwwroot\\",
+      "BasePath": "_content/WebApiCasinoPIA",
+      "RelativePath": "Archivo 1.txt",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Archivo 1.txt"
+    }
+  ]
 }

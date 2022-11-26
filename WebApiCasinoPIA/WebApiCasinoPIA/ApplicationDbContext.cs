@@ -22,6 +22,8 @@ namespace WebApiCasinoPIA
 
         public DbSet<Rifa> Rifas { get; set; }
 
+        public DbSet<Premio> Premios   { get; set; }
+
         public DbSet<ParticipanteRifa> ParticipantesRifas { get; set; }
     }
 }
