@@ -11,8 +11,8 @@ using WebApiCasinoPIA;
 namespace WebApiCasinoPIA.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221126055115_DTOs")]
-    partial class DTOs
+    [Migration("20221127221907_SistemaUsuario")]
+    partial class SistemaUsuario
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

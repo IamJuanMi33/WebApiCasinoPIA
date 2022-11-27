@@ -5,7 +5,7 @@
 namespace WebApiCasinoPIA.Migrations
 {
     /// <inheritdoc />
-    public partial class DTOs : Migration
+    public partial class SistemaUsuario : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
