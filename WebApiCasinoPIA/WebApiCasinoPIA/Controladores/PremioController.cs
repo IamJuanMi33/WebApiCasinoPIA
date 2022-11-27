@@ -41,9 +41,9 @@ namespace WebApiCasinoPIA.Controladores
         }
 
        [HttpPost]
-       public async Task<ActionResult> Post(Premio premio)
+       public async Task<ActionResult> Post(int rifaId,Premio premio)
         {
-            var existeRifa = await context.Rifas.AnyAsync(x => x.Id == premio.RifaId);
+            var existeRifa = await context.Rifas.AnyAsync(rifaDB => rifaDB.Id == rifaId);
            
             if (!existeRifa)
             {
@@ -77,21 +77,6 @@ namespace WebApiCasinoPIA.Controladores
             await context.SaveChangesAsync();
             return Ok();
             
-        }
-
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            var existe = await context.Premios.AnyAsync(x => x.Id == id);
-
-            if (!existe)
-            {
-                return NotFound("El recurso no fue encuentro");
-            }
-
-            context.Remove(new Premio { Id = id });
-            await context.SaveChangesAsync();
-            return Ok();
         }
     }
 }
