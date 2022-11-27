@@ -1,6 +1,6 @@
 ﻿namespace WebApiCasinoPIA.DTOs
 {
-    public class ParticipanteConRifa: GetParticipanteDTO
+    public class ParticipanteConRifaDTO: GetParticipanteDTO
     {
         public List<RifaDTO> Rifas { get; set; }
     }

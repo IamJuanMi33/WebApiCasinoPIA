@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiCasinoPIA.Entidades;
 
@@ -9,11 +10,14 @@ namespace WebApiCasinoPIA.Controladores
     public class RifasController : ControllerBase
     {
         private readonly ApplicationDbContext context;
+        private readonly IMapper mapper;
 
-        public RifasController(ApplicationDbContext context)
+        public RifasController(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
-        }   
+            this.mapper = mapper;
+        }
+
 
         [HttpGet("leer")]
         public async Task<ActionResult<List<Rifa>>> GetAll()

@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApiCasinoPIA.DTOs;
 using WebApiCasinoPIA.Entidades;
 
 namespace WebApiCasinoPIA.Controladores
@@ -9,74 +11,90 @@ namespace WebApiCasinoPIA.Controladores
     public class PremioController:ControllerBase
     {
         private readonly ApplicationDbContext context;
+        private readonly IMapper mapper;
 
-        public PremioController(ApplicationDbContext context)
+        public PremioController(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
         [HttpGet("/listado")]
-        public async Task<ActionResult<List<Premio>>> GetAll()
+        public async Task<ActionResult<List<PremioDTO>>> Get(int rifaId)
         {
-            return await context.Premios.ToListAsync();
+            var existeRifa = await context.Rifas.AnyAsync(rifaDB => rifaDB.Id == rifaId);
+
+            if (!existeRifa)
+            {
+                return NotFound();
+            }
+
+            var premios = await context.Premios.Where(premiosDB => premiosDB.RifaId == rifaId).ToListAsync();
+
+            return mapper.Map<List<PremioDTO>>(premios);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<Premio>> GetById(int id)
-        {
-            return await context.Premios.FirstOrDefaultAsync(x => x.Id == id);
-        }
+       
 
-        [HttpGet("{nombre}")]
-        public async Task<ActionResult<Premio>> Get(string nombre)
+        [HttpGet("{id:int}", Name = "obtenerPremio")]
+        public async Task<ActionResult<PremioDTO>> GetById(int id)
         {
-            var premio = await context.Premios.FirstOrDefaultAsync(x => x.Nombre.Contains(nombre));
+            var premio = await context.Premios.FirstOrDefaultAsync(premioDB => premioDB.Id == id);
 
             if(premio == null)
             {
                 return NotFound();
             }
 
-            return premio;
+            return mapper.Map<PremioDTO>(premio);
         }
 
        [HttpPost]
-       public async Task<ActionResult> Post(int rifaId,Premio premio)
+       public async Task<ActionResult> Post(int rifaId,PremioCreacionDTO premioCreacionDTO)
         {
             var existeRifa = await context.Rifas.AnyAsync(rifaDB => rifaDB.Id == rifaId);
-           
+
             if (!existeRifa)
-            {
-                return BadRequest($"No existe rifa con el id: {premio.RifaId}");
-
-            }
-
-            context.Add(premio);
-
-            await context.SaveChangesAsync();
-            return Ok();
-
-        }
-
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(Premio premio, int id)
-        {
-            var existe = await context.Premios.AnyAsync(x => x.Id == id);
-
-            if (!existe)
             {
                 return NotFound();
             }
 
-            if(premio.Id != id)
+            var premio = mapper.Map<Premio>(premioCreacionDTO);
+            premio.RifaId = rifaId;
+            context.Add(premio);
+            await context.SaveChangesAsync();   
+
+            var premioDTO = mapper.Map<PremioDTO>(premio);
+
+            return CreatedAtRoute("obtenerPremio", new { id = premio.Id, rifaId = rifaId }, premioDTO);
+
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(int rifaId, int id, PremioCreacionDTO premioCreacionDTO)
+        {
+            var existeRifa = await context.Rifas.AnyAsync(rifaDB => rifaDB.Id == rifaId);
+
+            if (!existeRifa)
             {
-                return BadRequest("El id no corresponde con el establecido");
+                return NotFound();
             }
+
+            var existePremio = await context.Premios.AnyAsync(premioDB => premioDB.Id == id);
+
+            if (!existePremio)
+            {
+                return NotFound();
+            }
+
+            var premio = mapper.Map<Premio>(premioCreacionDTO);
+            premio.Id = id;
+            premio.RifaId = rifaId;
 
             context.Update(premio);
             await context.SaveChangesAsync();
-            return Ok();
-            
+
+            return NoContent();
         }
     }
 }
