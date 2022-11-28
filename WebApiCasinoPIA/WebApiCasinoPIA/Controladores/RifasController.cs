@@ -1,12 +1,17 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApiCasinoPIA.DTOs;
 using WebApiCasinoPIA.Entidades;
 
 namespace WebApiCasinoPIA.Controladores
 {
     [ApiController]
     [Route("rifas")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
     public class RifasController : ControllerBase
     {
         private readonly ApplicationDbContext context;
@@ -18,53 +23,81 @@ namespace WebApiCasinoPIA.Controladores
             this.mapper = mapper;
         }
 
-
+        [AllowAnonymous]
         [HttpGet("leer")]
         public async Task<ActionResult<List<Rifa>>> GetAll()
         {
             return await context.Rifas.ToListAsync();
         }
 
-        [HttpGet("leer/{id:int}")]
-        public async Task<ActionResult<Rifa>> GetById(int id)
+        [HttpGet("leer/{id:int}", Name = "obtenerRifa")]
+        public async Task<ActionResult<RifaConParticipanteDTO>> GetById(int id)
         {
-            return await context.Rifas.FirstOrDefaultAsync(x => x.Id == id);
+            // Include/ ThenInclude para incluir datos de las tablas relacionadas
+            var rifa = await context.Rifas
+                            .Include(rifaDB => rifaDB.ParticipanteRifa)
+                            .ThenInclude(participanteRifaDB => participanteRifaDB.Participante)
+                            .Include(premioDB => premioDB.Premio)
+                            .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (rifa == null)
+            {
+                return NotFound("La rifa con el id establecido no fue encontrada");
+            }
+
+            rifa.ParticipanteRifa = rifa.ParticipanteRifa.OrderBy(x => x.Orden).ToList();
+
+            return mapper.Map<RifaConParticipanteDTO>(rifa);
         }
 
         [HttpPost("crear")]
-        public async Task<ActionResult> Post(Rifa rifa)
+        public async Task<ActionResult> Post(RifaCreacionDTO rifaCreacionDTO)
         {
-            var exist = await context.Rifas.AnyAsync(x => x.Nombre == rifa.Nombre);
-            if (exist)
+            if (rifaCreacionDTO.ParticipantesIds == null)
             {
-                return BadRequest("ya existe una rifa con el mismo nombre, favor de introducir otro nombre válido");
+                return BadRequest("No se puede crear una rifa sin participantes");
             }
+
+            var participantesIds = await context.Participantes
+                .Where(participanteBD => rifaCreacionDTO.ParticipantesIds.Contains(participanteBD.Id)).
+                Select(x => x.Id).ToListAsync();
+
+            if (rifaCreacionDTO.ParticipantesIds.Count != participantesIds.Count)
+            {
+                return BadRequest("No existe uno de los participantes registrados");
+            }
+
+            var rifa = mapper.Map<Rifa>(rifaCreacionDTO);
 
             context.Add(rifa);
             await context.SaveChangesAsync();
 
-            return Ok("la rifa fue creada correctamente");
+            var rifaDTO = mapper.Map<RifaDTO>(rifa);
+
+            return CreatedAtRoute("obtenerRifa", new { id = rifa.Id }, rifaDTO);
         }
 
         [HttpPut("actualizar/{id:int}")]
-        public async Task<ActionResult> Put(Rifa rifa, int id)
+        public async Task<ActionResult> Put(RifaCreacionDTO rifaCreacionDTO, int id)
         {
-            var exist = await context.Rifas.AnyAsync(x => x.Id == id);
+            var rifaDB = await context.Rifas
+                .Include(x => x.ParticipanteRifa)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
-            if (!exist)
+            if (rifaDB == null)
             {
                 return NotFound("La rifa con el id especificado no existe");
             }
 
-            if (rifa.Id != id)
+            if (rifaDB.Id != id)
             {
                 return BadRequest("El id de la rifa no coincide con el establecido en la url");
             }
 
-            context.Update(rifa);
-            await context.SaveChangesAsync();
+            rifaDB = mapper.Map(rifaCreacionDTO, rifaDB);
 
-            return Ok("La rifa fue modificada correctamente");
+            await context.SaveChangesAsync();
+            return NoContent();
         }
 
         [HttpDelete("borrar/{id:int}")]
@@ -83,8 +116,35 @@ namespace WebApiCasinoPIA.Controladores
             });
 
             await context.SaveChangesAsync();
-
             return Ok("La rifa fue eliminada correctamente");
+        }
+
+        [HttpPatch("patch/{id:int}")]
+        public async Task<ActionResult> Patch(int id, JsonPatchDocument<RifaPatchDTO> patchDocument)
+        {
+            if (patchDocument == null)
+            {
+                return BadRequest("El documento no existe");
+            }
+
+            var rifaDB = await context.Rifas.FirstOrDefaultAsync(x => x.Id == id);
+            if (rifaDB == null)
+            {
+                return NotFound("La rifa con el id especificado no existe");
+            }
+
+            var rifaDTO = mapper.Map<RifaPatchDTO>(rifaDB);
+            patchDocument.ApplyTo(rifaDTO);
+            var isValid = TryValidateModel(rifaDTO);
+            if (!isValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            mapper.Map(rifaDTO, rifaDB);
+
+            await context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

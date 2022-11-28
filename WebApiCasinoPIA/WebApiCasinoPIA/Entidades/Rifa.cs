@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApiCasinoPIA.Entidades
 {
@@ -14,33 +13,14 @@ namespace WebApiCasinoPIA.Entidades
         public List<ParticipanteRifa> ParticipanteRifa { get; set; }
         public List<Premio> Premio { get; set; }
 
-        //[NotMapped]
-        //public int Menor { get; set; }
-
-        //[NotMapped]
-        //public int Mayor { get; set; }
-
-        //public List<ParticipanteRifa> ParticipanteRifa { get; set; }
-
         //// Validación por Modelo
-        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        //{
-        //    if (!string.IsNullOrEmpty(Nombre))
-        //    {
-        //        var primeraLetra = Nombre[0].ToString();
-
-        //        if (primeraLetra != primeraLetra.ToUpper())
-        //        {
-        //            yield return new ValidationResult("La primera letra debe ser mayuscula",
-        //                new String[] { nameof(Nombre) });
-        //        }
-        //    }
-
-        //    if (Menor > Mayor)
-        //    {
-        //        yield return new ValidationResult("El valor de menor no puede ser mayor que el campo mayor",
-        //            new String[] { nameof(Menor) });
-        //    }
-        //}
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (ParticipanteRifa.Count() > 54)
+            {
+                yield return new ValidationResult("El límite de participantes por rifa es de 54",
+                    new String[] { nameof(Premio) });
+            }
+        }
     }
 }

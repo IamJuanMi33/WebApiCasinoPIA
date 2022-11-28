@@ -183,3 +183,8 @@ C:\Users\Leo21\Documents\Backend\WebApiCasinoPIA\WebApiCasinoPIA\WebApiCasinoPIA
 C:\Users\Leo21\Documents\Backend\WebApiCasinoPIA\WebApiCasinoPIA\WebApiCasinoPIA\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\Leo21\Documents\Backend\WebApiCasinoPIA\WebApiCasinoPIA\WebApiCasinoPIA\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\Users\Leo21\Documents\Backend\WebApiCasinoPIA\WebApiCasinoPIA\WebApiCasinoPIA\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+D:\Archivos DD\Papo\Documentos\FCFM\7mo\BackEnd\PIA\WebApiCasinoPIA\WebApiCasinoPIA\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Archivos DD\Papo\Documentos\FCFM\7mo\BackEnd\PIA\WebApiCasinoPIA\WebApiCasinoPIA\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\Archivos DD\Papo\Documentos\FCFM\7mo\BackEnd\PIA\WebApiCasinoPIA\WebApiCasinoPIA\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\Archivos DD\Papo\Documentos\FCFM\7mo\BackEnd\PIA\WebApiCasinoPIA\WebApiCasinoPIA\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\Archivos DD\Papo\Documentos\FCFM\7mo\BackEnd\PIA\WebApiCasinoPIA\WebApiCasinoPIA\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
