@@ -4,7 +4,6 @@ namespace WebApiCasinoPIA.Entidades
 {
     public class Boleto
     {
-        [Required]
         public int Id { get; set; }
 
         public string NombreRifa { get; set; }

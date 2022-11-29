@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,8 @@ namespace WebApiCasinoPIA.Controladores
 {
     [ApiController]
     [Route("boletos")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
+
     public class BoletosController : ControllerBase
     {
         private readonly ApplicationDbContext context;
@@ -23,80 +26,34 @@ namespace WebApiCasinoPIA.Controladores
         }
 
         [AllowAnonymous]
-        [HttpGet("leer")]
-        public async Task<ActionResult<List<GetBoletoDTO>>> Get([FromHeader] int rifaId, string rifaNombre)
+        [HttpGet("leer", Name = "obtenerBoleto")]
+        public async Task<ActionResult<List<BoletoDTO>>> Get([FromHeader] int rifaId, string rifaNombre)
         {
-            var boletos = await context.Rifas.AnyAsync(x => x.Id == rifaId);
-
-            return mapper.Map<List<GetBoletoDTO>>(boletos);
+            var boletos = await context.Boletos.Where(boletosDB => boletosDB.RifaId == rifaId).ToListAsync();
+            
+            return mapper.Map<List<BoletoDTO>>(boletos);
         }
 
-        //// GET: BoletosController/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
+        [HttpPost("asignar")]
+        [AllowAnonymous]
+        public async Task<ActionResult> Post(int rifaId, BoletoCreacionDTO boletoCreacionDTO)
+        {
+            var existeRifa = await context.Rifas.AnyAsync(rifaDB => rifaDB.Id == rifaId);
 
-        //// GET: BoletosController/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
+            if (!existeRifa)
+            {
+                return NotFound();
+            }
 
-        //// POST: BoletosController/Create
-        //[HttpPost]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            var boleto = mapper.Map<Boleto>(boletoCreacionDTO);
+            boleto.RifaId = rifaId;
+            context.Add(boleto);
+            await context.SaveChangesAsync();
 
-        //// GET: BoletosController/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
+            var boletoDTO = mapper.Map<BoletoDTO>(boleto);
 
-        //// POST: BoletosController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            return CreatedAtRoute("obtenerBoleto", new { id = boleto.Id }, boletoDTO);
 
-        //// GET: BoletosController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: BoletosController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace WebApiCasinoPIA.Controladores
         }
 
         //Obtener listado 
-        [HttpGet("leer")]
+        [HttpGet("leer", Name = "obtenerParticipante")]
         [AllowAnonymous]
         public async Task<ActionResult<List<GetParticipanteDTO>>> Get()
         {
@@ -37,9 +37,9 @@ namespace WebApiCasinoPIA.Controladores
         }
 
         [HttpPost("crear")]
-        public async Task<ActionResult> Post(Participante participante)
+        public async Task<ActionResult> Post(ParticipanteDTO participanteDTO)
         {
-            var exist = await context.Participantes.AnyAsync(x => x.Nombre == participante.Nombre);
+            var exist = await context.Participantes.AnyAsync(x => x.Nombre == participanteDTO.Nombre);
 
             // Validación desde el controlador
             if (exist)
@@ -47,10 +47,14 @@ namespace WebApiCasinoPIA.Controladores
                 return BadRequest("Ya existe un participante con el mismo nombre, favor de introducir otro nombre válido");
             }
 
+            var participante = mapper.Map<Participante>(participanteDTO);
+
             context.Add(participante);
             await context.SaveChangesAsync();
 
-            return Ok("El participante con fue creado correctamente");
+            var participanteDto = mapper.Map<GetParticipanteDTO>(participante);
+
+            return CreatedAtRoute("obtenerParticipante", new { id = participante.Id }, participanteDTO);
         }
 
         [HttpPut("actualizar/{id:int}")]
@@ -59,7 +63,7 @@ namespace WebApiCasinoPIA.Controladores
             var existeParticipante = await context.Participantes.AnyAsync(x => x.Id == id);
             if (!existeParticipante)
             {
-                return BadRequest("El id del participante no coincide con el establecido en la url");
+                return NotFound("El participante con el id establecido no existe");
             }
 
             var participante = mapper.Map<Participante>(participanteCreacionDTO);

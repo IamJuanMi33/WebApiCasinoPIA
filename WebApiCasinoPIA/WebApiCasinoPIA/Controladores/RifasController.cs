@@ -50,6 +50,25 @@ namespace WebApiCasinoPIA.Controladores
             return mapper.Map<RifaConParticipanteDTO>(rifa);
         }
 
+        [HttpGet("ganador")]
+        public async Task<ActionResult<RifaConParticipanteDTO>> GetWinnerById(int id)
+        {
+            // Include/ ThenInclude para incluir datos de las tablas relacionadas
+            var rifa = await context.Rifas
+                            .Include(rifaDB => rifaDB.ParticipanteRifa.Take(3))
+                            .ThenInclude(participanteRifaDB => participanteRifaDB.Participante)
+                            .Include(premioDB => premioDB.Premio)
+                            .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (rifa == null)
+            {
+                return NotFound("La rifa con el id establecido no fue encontrada");
+            }
+
+            rifa.ParticipanteRifa = rifa.ParticipanteRifa.OrderBy(x => x.Orden).ToList();
+
+            return mapper.Map<RifaConParticipanteDTO>(rifa);
+        }
 
 
         [HttpPost("crear")]

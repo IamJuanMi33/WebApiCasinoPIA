@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,6 +12,7 @@ namespace WebApiCasinoPIA.Controladores
 {
     [ApiController]
     [Route("cuentas")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
     public class CuentasController: ControllerBase
     {
         private readonly UserManager<IdentityUser> userManager;
@@ -59,6 +62,7 @@ namespace WebApiCasinoPIA.Controladores
         }
 
         [HttpGet("RenovarToken")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<RespuestaAutenticacion>> Renovar()
         {
             var emailClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
@@ -78,7 +82,7 @@ namespace WebApiCasinoPIA.Controladores
 
             var claims = new List<Claim>
             {
-                new Claim("email", credencialesUsuario.Email),
+                new Claim("email", credencialesUsuario.Email)
 
             };
 
@@ -90,7 +94,7 @@ namespace WebApiCasinoPIA.Controladores
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["keyjwt"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expiration = DateTime.UtcNow.AddMinutes(30);
+            var expiration = DateTime.UtcNow.AddDays(3);
 
             var securityToken = new JwtSecurityToken(issuer: null, audience: null, claims: claims,
                 expires: expiration, signingCredentials: creds);

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiCasinoPIA.DTOs;
@@ -7,8 +9,10 @@ using WebApiCasinoPIA.Entidades;
 namespace WebApiCasinoPIA.Controladores
 {
     [ApiController]
-    [Route("rifa/{rifaId:int}/premios")]
-    public class PremioController:ControllerBase
+    [Route("premios")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
+
+    public class PremioController : ControllerBase
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
@@ -49,8 +53,8 @@ namespace WebApiCasinoPIA.Controladores
             return mapper.Map<PremioDTO>(premio);
         }
 
-       [HttpPost]
-       public async Task<ActionResult> Post(int rifaId,PremioCreacionDTO premioCreacionDTO)
+       [HttpPost("crear")]
+       public async Task<ActionResult> Post(int rifaId, PremioCreacionDTO premioCreacionDTO)
         {
             var existeRifa = await context.Rifas.AnyAsync(rifaDB => rifaDB.Id == rifaId);
 
@@ -62,7 +66,7 @@ namespace WebApiCasinoPIA.Controladores
             var premio = mapper.Map<Premio>(premioCreacionDTO);
             premio.RifaId = rifaId;
             context.Add(premio);
-            await context.SaveChangesAsync();   
+            await context.SaveChangesAsync();
 
             var premioDTO = mapper.Map<PremioDTO>(premio);
 

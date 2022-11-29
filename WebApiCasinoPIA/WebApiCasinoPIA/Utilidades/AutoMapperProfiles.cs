@@ -20,6 +20,8 @@ namespace WebApiCasinoPIA.Utilidades
             CreateMap<RifaPatchDTO, Rifa>().ReverseMap();
             CreateMap<PremioCreacionDTO, Premio>();
             CreateMap<Premio, PremioDTO>();
+            CreateMap<BoletoCreacionDTO, Boleto>();
+            CreateMap<Boleto, BoletoDTO>();
         }
 
         private List<RifaDTO> MapParticipanteRifaDTO(Participante participate, GetParticipanteDTO getParticipanteDTO)
@@ -73,6 +75,27 @@ namespace WebApiCasinoPIA.Utilidades
             foreach(var participantesId in rifaCreacionDTO.ParticipantesIds)
             {
                 result.Add(new ParticipanteRifa() { ParticipanteId = participantesId });
+            }
+
+            return result;
+        }
+
+        private List<GetBoletoDTO> MapBoletoDTORifa(Rifa rifa)
+        {
+            var result = new List<GetBoletoDTO>();
+
+            if (rifa.Boletos == null)
+            {
+                return result;
+            }
+
+            foreach (var boletoRifa in rifa.Boletos)
+            {
+                result.Add(new GetBoletoDTO()
+                {
+                    Id = boletoRifa.Id,
+                    NombreRifa = boletoRifa.NombreRifa
+                });
             }
 
             return result;

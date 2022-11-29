@@ -2,10 +2,9 @@
 
 namespace WebApiCasinoPIA.DTOs
 {
-    public class PremioDTO
+    public class GetPremioDTO
     {
         public int Id { get; set; }
-
         public string Nombre { get; set; }
         public int? RifaId { get; set; }
         public int? ParticipanteId { get; set; }
