@@ -268,15 +268,10 @@ namespace WebApiCasinoPIA.Migrations
                     b.Property<string>("Nombre")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ParticipanteId")
-                        .HasColumnType("int");
-
                     b.Property<int>("RifaId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ParticipanteId");
 
                     b.HasIndex("RifaId");
 
@@ -373,19 +368,11 @@ namespace WebApiCasinoPIA.Migrations
 
             modelBuilder.Entity("WebApiCasinoPIA.Entidades.Premio", b =>
                 {
-                    b.HasOne("WebApiCasinoPIA.Entidades.Participante", "Participante")
-                        .WithMany("Premio")
-                        .HasForeignKey("ParticipanteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("WebApiCasinoPIA.Entidades.Rifa", "Rifa")
                         .WithMany("Premio")
                         .HasForeignKey("RifaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Participante");
 
                     b.Navigation("Rifa");
                 });
@@ -393,8 +380,6 @@ namespace WebApiCasinoPIA.Migrations
             modelBuilder.Entity("WebApiCasinoPIA.Entidades.Participante", b =>
                 {
                     b.Navigation("ParticipanteRifa");
-
-                    b.Navigation("Premio");
                 });
 
             modelBuilder.Entity("WebApiCasinoPIA.Entidades.Rifa", b =>

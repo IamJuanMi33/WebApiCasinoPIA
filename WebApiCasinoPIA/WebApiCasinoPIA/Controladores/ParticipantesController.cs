@@ -33,23 +33,27 @@ namespace WebApiCasinoPIA.Controladores
             return mapper.Map<List<GetParticipanteDTO>>(participantes);
         }
 
-        [HttpPost("crear")]
-       // public async Task<ActionResult> Post(ParticipanteDTO participanteDto)
-        //{
-            //Hay que validar que no exista el mismo numero de rifa
-            // var exist = await context.Participantes.AnyAsync(x => x.Nombre == participante.Nombre);
+       [HttpPost("crear")]
+       public async Task<ActionResult> Post(ParticipanteDTO participanteDto)
+       {
+           //Hay que validar que no exista el mismo numero de rifa
+            var exist = await context.Participantes.AnyAsync(x => x.Nombre == participanteDto.Nombre);
             
-            // Validación desde el controlador
-            //if (exist)
-            //{
-              //  return BadRequest("Ya existe un participante con el mismo nombre, favor de introducir otro nombre válido");
-            //}
+            //Validación desde el controlador
+           if (exist)
+            {
+               return BadRequest("Ya existe un participante con el mismo nombre, favor de introducir otro nombre válido");
+            }
 
-            //context.Add(participante);
-            //await context.SaveChangesAsync();
+            var participante = mapper.Map<Participante>(participanteDto);
+
+            context.Add(participante);
+            await context.SaveChangesAsync();
+
+            var participanteDTO = mapper.Map<GetParticipanteDTO>(participante);
             
-            //return Ok("El participante con fue creado correctamente");
-        //}
+            return CreatedAtRoute("obtenerParticipante", new {id = participante.Id}, participanteDTO)
+        }
 
         [HttpPut("actualizar/{id:int}")]
         public async Task<ActionResult> Put(ParticipanteDTO participanteCreacionDTO, int id)

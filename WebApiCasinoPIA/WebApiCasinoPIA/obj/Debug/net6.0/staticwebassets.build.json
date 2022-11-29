@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "XQRnsx8f1S5c9aNVUlNnZqknmTknvHPHh6XAAvlYky0=",
+  "Hash": "zhYuzE680/tjY0UaIlz8lIlPaYBw739HK967ULYdKro=",
   "Source": "WebApiCasinoPIA",
   "BasePath": "_content/WebApiCasinoPIA",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "WebApiCasinoPIA\\wwwroot",
       "Source": "WebApiCasinoPIA",
-      "ContentRoot": "D:\\Archivos DD\\Papo\\Documentos\\FCFM\\7mo\\BackEnd\\PIA\\WebApiCasinoPIA\\WebApiCasinoPIA\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Leo21\\Documents\\Backend\\WebApiCasinoPIA\\WebApiCasinoPIA\\WebApiCasinoPIA\\wwwroot\\",
       "BasePath": "_content/WebApiCasinoPIA",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "D:\\Archivos DD\\Papo\\Documentos\\FCFM\\7mo\\BackEnd\\PIA\\WebApiCasinoPIA\\WebApiCasinoPIA\\wwwroot\\Archivo 1.txt",
+      "Identity": "C:\\Users\\Leo21\\Documents\\Backend\\WebApiCasinoPIA\\WebApiCasinoPIA\\WebApiCasinoPIA\\wwwroot\\Archivo 1.txt",
       "SourceId": "WebApiCasinoPIA",
       "SourceType": "Discovered",
-      "ContentRoot": "D:\\Archivos DD\\Papo\\Documentos\\FCFM\\7mo\\BackEnd\\PIA\\WebApiCasinoPIA\\WebApiCasinoPIA\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Leo21\\Documents\\Backend\\WebApiCasinoPIA\\WebApiCasinoPIA\\WebApiCasinoPIA\\wwwroot\\",
       "BasePath": "_content/WebApiCasinoPIA",
       "RelativePath": "Archivo 1.txt",
       "AssetKind": "All",

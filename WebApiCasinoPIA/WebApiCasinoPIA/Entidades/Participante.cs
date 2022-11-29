@@ -20,7 +20,5 @@ namespace WebApiCasinoPIA.Entidades
         public string Apellido { get; set; }
 
         public List<ParticipanteRifa> ParticipanteRifa { get; set; }
-
-        public List<Premio> Premio { get; set; }
     }
 }

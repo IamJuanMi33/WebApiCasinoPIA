@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;   
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +11,7 @@ namespace WebApiCasinoPIA.Controladores
 {
     [ApiController]
     [Route("rifas")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
+   // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
     public class RifasController : ControllerBase
     {
         private readonly ApplicationDbContext context;
@@ -45,7 +45,7 @@ namespace WebApiCasinoPIA.Controladores
                 return NotFound("La rifa con el id establecido no fue encontrada");
             }
 
-            rifa.ParticipanteRifa = rifa.ParticipanteRifa.OrderBy(x => x.Orden).ToList();
+          //  rifa.ParticipanteRifa = rifa.ParticipanteRifa.OrderBy(x => x.Orden).ToList();
 
             return mapper.Map<RifaConParticipanteDTO>(rifa);
         }
@@ -53,19 +53,19 @@ namespace WebApiCasinoPIA.Controladores
         [HttpPost("crear")]
         public async Task<ActionResult> Post(RifaCreacionDTO rifaCreacionDTO)
         {
-            if (rifaCreacionDTO.ParticipantesIds == null)
-            {
-                return BadRequest("No se puede crear una rifa sin participantes");
-            }
+           // if (rifaCreacionDTO.ParticipantesIds == null)
+            //{
+              //  return BadRequest("No se puede crear una rifa sin participantes");
+            //}
 
-            var participantesIds = await context.Participantes
-                .Where(participanteBD => rifaCreacionDTO.ParticipantesIds.Contains(participanteBD.Id)).
-                Select(x => x.Id).ToListAsync();
+          //  var participantesIds = await context.Participantes
+            //    .Where(participanteBD => rifaCreacionDTO.ParticipantesIds.Contains(participanteBD.Id)).
+              //  Select(x => x.Id).ToListAsync();
 
-            if (rifaCreacionDTO.ParticipantesIds.Count != participantesIds.Count)
-            {
-                return BadRequest("No existe uno de los participantes registrados");
-            }
+         //   if (rifaCreacionDTO.ParticipantesIds.Count != participantesIds.Count)
+           // {
+             //   return BadRequest("No existe uno de los participantes registrados");
+            //}
 
             var rifa = mapper.Map<Rifa>(rifaCreacionDTO);
 

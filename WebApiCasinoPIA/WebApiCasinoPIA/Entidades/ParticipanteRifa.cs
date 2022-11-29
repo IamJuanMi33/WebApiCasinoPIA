@@ -6,7 +6,7 @@
 
         public int RifaId { get; set; }
 
-        public int Orden { get; set; }
+        //public int NumRifa { get; set; }
 
         public Participante Participante { get; set; }
 
