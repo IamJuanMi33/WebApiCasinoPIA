@@ -23,8 +23,8 @@ namespace WebApiCasinoPIA.Controladores
             this.mapper = mapper;
         }
 
-        [AllowAnonymous]
         [HttpGet("leer")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<Rifa>>> GetAll()
         {
             return await context.Rifas.ToListAsync();
@@ -49,6 +49,8 @@ namespace WebApiCasinoPIA.Controladores
 
             return mapper.Map<RifaConParticipanteDTO>(rifa);
         }
+
+
 
         [HttpPost("crear")]
         public async Task<ActionResult> Post(RifaCreacionDTO rifaCreacionDTO)

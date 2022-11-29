@@ -220,6 +220,33 @@ namespace WebApiCasinoPIA.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("WebApiCasinoPIA.Entidades.Boleto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("NombreRifa")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ParticipanteId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RifaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParticipanteId")
+                        .IsUnique();
+
+                    b.HasIndex("RifaId");
+
+                    b.ToTable("Boletos");
+                });
+
             modelBuilder.Entity("WebApiCasinoPIA.Entidades.Participante", b =>
                 {
                     b.Property<int>("Id")
@@ -248,6 +275,9 @@ namespace WebApiCasinoPIA.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("RifaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Orden")
                         .HasColumnType("int");
 
                     b.HasKey("ParticipanteId", "RifaId");
@@ -352,6 +382,21 @@ namespace WebApiCasinoPIA.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("WebApiCasinoPIA.Entidades.Boleto", b =>
+                {
+                    b.HasOne("WebApiCasinoPIA.Entidades.Participante", null)
+                        .WithOne("Boleto")
+                        .HasForeignKey("WebApiCasinoPIA.Entidades.Boleto", "ParticipanteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApiCasinoPIA.Entidades.Rifa", null)
+                        .WithMany("Boletos")
+                        .HasForeignKey("RifaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("WebApiCasinoPIA.Entidades.ParticipanteRifa", b =>
                 {
                     b.HasOne("WebApiCasinoPIA.Entidades.Participante", "Participante")
@@ -392,6 +437,8 @@ namespace WebApiCasinoPIA.Migrations
 
             modelBuilder.Entity("WebApiCasinoPIA.Entidades.Participante", b =>
                 {
+                    b.Navigation("Boleto");
+
                     b.Navigation("ParticipanteRifa");
 
                     b.Navigation("Premio");
@@ -399,6 +446,8 @@ namespace WebApiCasinoPIA.Migrations
 
             modelBuilder.Entity("WebApiCasinoPIA.Entidades.Rifa", b =>
                 {
+                    b.Navigation("Boletos");
+
                     b.Navigation("ParticipanteRifa");
 
                     b.Navigation("Premio");

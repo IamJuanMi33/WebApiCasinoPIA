@@ -11,7 +11,10 @@ namespace WebApiCasinoPIA.Entidades
         public string Nombre { get; set; }
 
         public List<ParticipanteRifa> ParticipanteRifa { get; set; }
+
         public List<Premio> Premio { get; set; }
+
+        public List<Boleto> Boletos { get; set; }
 
         //// Validación por Modelo
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

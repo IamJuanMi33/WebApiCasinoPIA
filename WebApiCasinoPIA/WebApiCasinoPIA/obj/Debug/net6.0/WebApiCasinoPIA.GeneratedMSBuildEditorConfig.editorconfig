@@ -14,3 +14,27 @@ build_property.SupportLocalizedComponentNames =
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
 build_property.MSBuildProjectDirectory = D:\Archivos DD\Papo\Documentos\FCFM\7mo\BackEnd\PIA\WebApiCasinoPIA\WebApiCasinoPIA
 build_property._RazorSourceGeneratorDebug = 
+
+[D:/Archivos DD/Papo/Documentos/FCFM/7mo/BackEnd/PIA/WebApiCasinoPIA/WebApiCasinoPIA/Views/Boletos/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9sZXRvc1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Archivos DD/Papo/Documentos/FCFM/7mo/BackEnd/PIA/WebApiCasinoPIA/WebApiCasinoPIA/Views/Boletos/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9sZXRvc1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Archivos DD/Papo/Documentos/FCFM/7mo/BackEnd/PIA/WebApiCasinoPIA/WebApiCasinoPIA/Views/Boletos/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9sZXRvc1xEZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Archivos DD/Papo/Documentos/FCFM/7mo/BackEnd/PIA/WebApiCasinoPIA/WebApiCasinoPIA/Views/Boletos/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9sZXRvc1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Archivos DD/Papo/Documentos/FCFM/7mo/BackEnd/PIA/WebApiCasinoPIA/WebApiCasinoPIA/Views/Boletos/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQm9sZXRvc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Archivos DD/Papo/Documentos/FCFM/7mo/BackEnd/PIA/WebApiCasinoPIA/WebApiCasinoPIA/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

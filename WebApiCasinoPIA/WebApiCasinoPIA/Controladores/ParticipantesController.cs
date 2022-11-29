@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiCasinoPIA.DTOs;
@@ -8,6 +10,7 @@ namespace WebApiCasinoPIA.Controladores
 {
     [ApiController]
     [Route("participantes")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
     public class ParticipantesController : ControllerBase
     {
         private readonly ApplicationDbContext context;
@@ -21,9 +24,9 @@ namespace WebApiCasinoPIA.Controladores
             this.mapper = mapper;
         }
 
-
         //Obtener listado 
         [HttpGet("leer")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<GetParticipanteDTO>>> Get()
         {
             // Logger
@@ -34,22 +37,21 @@ namespace WebApiCasinoPIA.Controladores
         }
 
         [HttpPost("crear")]
-       // public async Task<ActionResult> Post(ParticipanteDTO participanteDto)
-        //{
-            //Hay que validar que no exista el mismo numero de rifa
-            // var exist = await context.Participantes.AnyAsync(x => x.Nombre == participante.Nombre);
-            
-            // Validación desde el controlador
-            //if (exist)
-            //{
-              //  return BadRequest("Ya existe un participante con el mismo nombre, favor de introducir otro nombre válido");
-            //}
+        public async Task<ActionResult> Post(Participante participante)
+        {
+            var exist = await context.Participantes.AnyAsync(x => x.Nombre == participante.Nombre);
 
-            //context.Add(participante);
-            //await context.SaveChangesAsync();
-            
-            //return Ok("El participante con fue creado correctamente");
-        //}
+            // Validación desde el controlador
+            if (exist)
+            {
+                return BadRequest("Ya existe un participante con el mismo nombre, favor de introducir otro nombre válido");
+            }
+
+            context.Add(participante);
+            await context.SaveChangesAsync();
+
+            return Ok("El participante con fue creado correctamente");
+        }
 
         [HttpPut("actualizar/{id:int}")]
         public async Task<ActionResult> Put(ParticipanteDTO participanteCreacionDTO, int id)

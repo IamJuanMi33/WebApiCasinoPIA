@@ -25,6 +25,8 @@ namespace WebApiCasinoPIA
 
         public DbSet<Premio> Premios { get; set; }
 
+        public DbSet<Boleto> Boletos { get; set; }
+
         public DbSet<ParticipanteRifa> ParticipantesRifas { get; set; }
     }
 }
